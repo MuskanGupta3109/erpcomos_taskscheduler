@@ -134,7 +134,7 @@ function Home() {
                             <a href="forgot.html">Forgot Password</a>
                           </p>
                           <p className="text-dark mb-0">
-                            Don't have account?
+                            Don&apos;t have account?
                             <a href="register.html" className="text-primary ms-1">
                               Sign UP
                             </a>

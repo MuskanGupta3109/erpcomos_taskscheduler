@@ -1,7 +1,7 @@
-(function($) {
+(function ($) {
 	"use strict";
 
-	
+
 	// ______________Active Class
 	$(window).on("load", function (e) {
 		$(".horizontalMenu-list li a").each(function () {
@@ -34,28 +34,28 @@
 	});
 
 	// ______________ Back to Top
-	$(window).on("scroll", function(e) {
+	$(window).on("scroll", function (e) {
 		if ($(this).scrollTop() > 0) {
 			$('#back-to-top').fadeIn('slow');
 		} else {
 			$('#back-to-top').fadeOut('slow');
 		}
 	});
-	$("#back-to-top").on("click", function(e) {
+	$("#back-to-top").on("click", function (e) {
 		$("html, body").animate({
 			scrollTop: 0
-		},0);
+		}, 0);
 		return false;
 	});
 
 	// ______________Quantity-right-plus
 	var quantitiy = 0;
-	$('.quantity-right-plus').on('click', function(e) {
+	$('.quantity-right-plus').on('click', function (e) {
 		e.preventDefault();
 		var quantity = parseInt($('#quantity').val());
 		$('#quantity').val(quantity + 1);
 	});
-	$('.quantity-left-minus').on('click', function(e) {
+	$('.quantity-left-minus').on('click', function (e) {
 		e.preventDefault();
 		var quantity = parseInt($('#quantity').val());
 		if (quantity > 0) {
@@ -68,7 +68,7 @@ feCz66HNQhyoUIndT6pXQpWta+PA3e1h3yExMyH1EsOo6f8PXnNPyHGLRfchOSF9WSX7exs=*/
 
 	// ______________Chart-circle
 	if ($('.chart-circle').length) {
-		$('.chart-circle').each(function() {
+		$('.chart-circle').each(function () {
 			let $this = $(this);
 			$this.circleProgress({
 				fill: {
@@ -84,7 +84,7 @@ feCz66HNQhyoUIndT6pXQpWta+PA3e1h3yExMyH1EsOo6f8PXnNPyHGLRfchOSF9WSX7exs=*/
 	const DIV_CARD = 'div.card';
 
 	// ______________Card Remove
-	$('[data-bs-toggle="card-remove"]').on('click', function(e) {
+	$('[data-bs-toggle="card-remove"]').on('click', function (e) {
 		let $card = $(this).closest(DIV_CARD);
 		$card.remove();
 		e.preventDefault();
@@ -92,7 +92,7 @@ feCz66HNQhyoUIndT6pXQpWta+PA3e1h3yExMyH1EsOo6f8PXnNPyHGLRfchOSF9WSX7exs=*/
 	});
 
 	// ______________Card Collapse
-	$('[data-bs-toggle="card-collapse"]').on('click', function(e) {
+	$('[data-bs-toggle="card-collapse"]').on('click', function (e) {
 		let $card = $(this).closest(DIV_CARD);
 		$card.toggleClass('card-collapsed');
 		e.preventDefault();
@@ -100,7 +100,7 @@ feCz66HNQhyoUIndT6pXQpWta+PA3e1h3yExMyH1EsOo6f8PXnNPyHGLRfchOSF9WSX7exs=*/
 	});
 
 	// ______________Card Full Screen
-	$('[data-bs-toggle="card-fullscreen"]').on('click', function(e) {
+	$('[data-bs-toggle="card-fullscreen"]').on('click', function (e) {
 		let $card = $(this).closest(DIV_CARD);
 		$card.toggleClass('card-fullscreen').removeClass('card-collapsed');
 		e.preventDefault();
@@ -124,7 +124,7 @@ feCz66HNQhyoUIndT6pXQpWta+PA3e1h3yExMyH1EsOo6f8PXnNPyHGLRfchOSF9WSX7exs=*/
 // ---------------End Transparent-theme-----------------//
 
 // ---------------top-header-light-----------------//
-    // $('body').addClass('top-header-light');
+// $('body').addClass('top-header-light');
 // ---------------top-header-light-----------------//
 
 // ---------------top-header-dark-----------------//
@@ -142,24 +142,48 @@ feCz66HNQhyoUIndT6pXQpWta+PA3e1h3yExMyH1EsOo6f8PXnNPyHGLRfchOSF9WSX7exs=*/
 // ---------------Start RTL VERSION-----------------//
 // $('body').addClass('rtl');  
 
-	
-	/***************** RTL HAS CLASS *********************/
 
-	let bodyRtl = document.querySelector('body').classList.contains('rtl');
-		if (bodyRtl) {
-			$('body').addClass('rtl');
-			$('body').removeClass('ltr');
-			$("html[lang=en]").attr("dir", "rtl");
-			$("head link#style").attr("href", $(this));
-			(document.getElementById("style").setAttribute("href", "../assets/plugins/bootstrap/css/bootstrap.rtl.min.css"));
-			var carousel = $('.owl-carousel');
-			$.each(carousel ,function( index, element ) {
-			// element == this
-				var carouselData = $(element).data('owl.carousel');
-				carouselData.settings.rtl = true; //don't know if both are necessary
-				carouselData.options.rtl = true;
-				$(element).trigger('refresh.owl.carousel');
-			});
-		} 
-	
-	/***************** RTL HAS CLASS END *********************/
+/***************** RTL HAS CLASS *********************/
+
+let bodyRtl = document.querySelector('body').classList.contains('rtl');
+if (bodyRtl) {
+	$('body').addClass('rtl');
+	$('body').removeClass('ltr');
+	$("html[lang=en]").attr("dir", "rtl");
+	$("head link#style").attr("href", $(this));
+	(document.getElementById("style").setAttribute("href", "../assets/plugins/bootstrap/css/bootstrap.rtl.min.css"));
+	var carousel = $('.owl-carousel');
+	$.each(carousel, function (index, element) {
+		// element == this
+		var carouselData = $(element).data('owl.carousel');
+		carouselData.settings.rtl = true; //don't know if both are necessary
+		carouselData.options.rtl = true;
+		$(element).trigger('refresh.owl.carousel');
+	});
+}
+
+/***************** RTL HAS CLASS END *********************/
+
+
+
+function myFunction() {
+	// Declare variables
+	var input, filter, table, tr, td, i, txtValue;
+	input = document.getElementById("myInput");
+	filter = input.value.toUpperCase();
+	table = document.getElementById("datatable-buttons");
+	tr = table.getElementsByTagName("tr");
+
+	// Loop through all table rows, and hide those who don't match the search query
+	for (i = 0; i < tr.length; i++) {
+		td = tr[i].getElementsByTagName("td")[1];
+		if (td) {
+			txtValue = td.textContent || td.innerText;
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+			} else {
+				tr[i].style.display = "none";
+			}
+		}
+	}
+}

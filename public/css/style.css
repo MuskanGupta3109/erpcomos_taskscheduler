@@ -12592,7 +12592,7 @@ button.btn-close {
     }
 
     abbr[title]::after {
-        content: " ("attr(title) ")";
+        content: " (" attr(title) ")";
     }
 
     pre {
@@ -12784,8 +12784,8 @@ body {
     -webkit-text-size-adjust: none;
     -ms-touch-action: manipulation;
     touch-action: manipulation;
-    -webkit-font-feature-settings: "liga"0;
-    font-feature-settings: "liga"0;
+    -webkit-font-feature-settings: "liga" 0;
+    font-feature-settings: "liga" 0;
     overflow-y: scroll;
     position: relative;
 }
@@ -46524,4 +46524,15 @@ a.text-light:hover {
 .mw-100 {
     max-width: 100% !important;
 }
+
 /*# sourceMappingURL=style.css.map */
+
+
+
+body {
+    margin: 2em;
+}
+
+td:last-child {
+    text-align:center;
+}

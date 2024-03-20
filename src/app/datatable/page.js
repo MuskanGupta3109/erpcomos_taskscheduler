@@ -1,56 +1,60 @@
 "use client"
+
 import Image from "next/image";
+// import styles from "./page.module.css";
 import Header from "../components/header";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Home() {
     const [data, setData] = useState(undefined);
-    const [user_type, setUserType] = useState('');
+    const apiurl = process.env.apiurl
+    const [user_type, setusertype] = useState('');
     const [page, setpage] = useState(1)
     const [size, setSize] = useState('')
     const [startindex, setStartIndex] = useState(0)
     const [limit, setLimit] = useState(15)
     const [prev, setPrev] = useState('')
     const [next, setNext] = useState('')
-    var testValue = "";
-    var id = "";
+    const [input, setInput] = useState('')
 
+
+    var testValue = "";
 
     useEffect(() => {
         // Check if localStorage is available (client-side)
 
         testValue = localStorage.getItem('testKey');
-
-        id = localStorage.getItem('userid');
-        // setIsLoggedin(testValue);
+        setusertype(testValue)
         const prevButton = document.getElementById('prevButton');
         const nextButton = document.getElementById('nextButton');
         setPrev(prevButton)
         setNext(nextButton)
-        if (testValue == "null" || testValue != 'transfer') {
+
+        // setIsLoggedin(testValue);
+        if (testValue == "null") {
             return window.location.href = '/'; // Redirect to the root URL
         }
 
 
     }, []);
 
+    const [filter, setFilter] = useState('');
+
+
     useEffect(() => {
-        // Set user_type with the value from localStorage when component mounts
-        setUserType(testValue);
-
-
-
         async function fetchData() {
             try {
-                const res = await axios.get(`${apiurl}/admin/finishedproduct/${id}`, { cache: 'no-store' });
+
+                const res = await axios.get(`${apiurl}/admin/pendingjob/${testValue}`, { cache: 'no-store' });
                 console.log(res)
-                const jsonData = await res.data
-                setData(jsonData.data);
-                console.log("jsonData", jsonData)
+                const jsonData = await res.data.data
+                // const jsonData = await res.json();
+                setData(jsonData);
+                console.log("jsonData", jsonData, data)
                 setSize(parseInt((jsonData.length) / 15) + 1)
 
-                // prevButton.disabled = true;
+
             } catch (error) {
                 console.error(error);
                 // Handle error, for example set state indicating error occurred
@@ -58,7 +62,8 @@ export default function Home() {
         }
 
         fetchData();
-    }, [testValue, id]);
+    }, []);
+
 
     const fetchData1 = async (position) => {
         console.log(position)
@@ -119,18 +124,25 @@ export default function Home() {
     if (data === undefined) {
         return <div>Loading...</div>
     }
-    // if (size <= 1) {
-    //     nextButton.disabled = true;
-    // }
-
     console.log("jsonData1", data)
+
+
+
+
 
     return (
         <div>
-            <Header usertype={testValue} />
+            <Header usertype={user_type} />
             <div className="card mb-0">
                 <div className="card-header">
                     <h3 className="card-title">Jobs List</h3>
+                    {/* <input
+                        id="searchInput"
+                        type="text"
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        placeholder="Search..."
+                    /> */}
                     <input
                         type="text"
                         id="myInput"
@@ -138,6 +150,8 @@ export default function Home() {
                         onChange={(e) => myFunction()}
                         placeholder="Search for product names.."
                     />
+
+
                 </div>
                 <div className="card-body">
                     <div className="table-responsive border-top">
@@ -148,9 +162,7 @@ export default function Home() {
                                     <th>Product</th>
                                     <th>Category</th>
                                     <th>Quantity</th>
-                                    <th>GRM Number</th>
-                                    <th>Date</th>
-
+                                    <th>pending Quantity</th>
                                     <th>Priority</th>
 
                                     {/* <th>Status</th> */}
@@ -158,20 +170,23 @@ export default function Home() {
                             </thead>
                             <tbody>
                                 {data.slice(startindex, limit).map((jobs, index) => (
+                                    <tr key={jobs.data1.id}>
+                                        <td className="text-primary">{jobs.data1.id}</td>
+                                        <td className="text-primary">{JSON.parse(jobs.data1.product).name}</td>
 
-                                    <tr key={`${jobs.id}`}>
-                                        <td>{jobs.id}</td>
-                                        <td>{JSON.parse(jobs.product).name}</td>
+                                        <td>{jobs.data1.usertype}</td>
+                                        <td>{jobs.data1.quantity}</td>
+                                        <td className="font-weight-semibold fs-16">{jobs.data1.pending}</td>
+                                        <td>{jobs.data1.priority}</td>
 
-
-                                        <td>{jobs.usertype}</td>
-                                        <td>{jobs.quantity}</td>
-                                        <td className="font-weight-semibold fs-16">{jobs.grmnumber}</td>
-                                        <td className="font-weight-semibold fs-16">{jobs.createdAt.slice(0, 10)}</td>
-
-                                        <td>{jobs.priority}</td>
+                                        {/* <td>
+                                            {jobs.data1.status === 0 && (
+                                                <a href="##" className="badge bg-danger">
+                                                    pending
+                                                </a>
+                                            )}
+                                        </td> */}
                                     </tr>
-
                                 ))}
                             </tbody>
                         </table>
@@ -201,6 +216,7 @@ export default function Home() {
                             Next
                         </button>
                     </>
+
                 </div>
             </div>
 

@@ -5,23 +5,39 @@ import Image from "next/image";
 import Header from "../components/header";
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
     const [user_type, setusertype] = useState('');
+    var testValue = ""
 
-    const testValue = localStorage.getItem('testKey');
-    console.log(testValue)
+    // const testValue = localStorage.getItem('testKey');
+    // console.log(testValue)
     // setusertype(testValue)
-    console.log(testValue)
-    if (testValue == "null") {
-        return window.location.href = './'; // Redirect to the root URL
+    // console.log(testValue)
+    // if (testValue == "null") {
+    //     return window.location.href = './'; // Redirect to the root URL
+    // }
+    useEffect(() => {
+        // Check if localStorage is available (client-side)
+
+        testValue = localStorage.getItem('testKey');
+        console.log(testValue)
+        setusertype(testValue)
+        // setIsLoggedin(testValue);
+        if (testValue == "null") {
+            return window.location.href = '/'; // Redirect to the root URL
+        }
+
+
+    }, []);
+
+    if (user_type == "") {
+        return <p>Loading</p>
     }
-
-
     return (
-        <>
-            <Header usertype={testValue} />
+        <div>
+            <Header usertype={user_type} />
 
             <section style={{ padding: "60px 100px" }}>
                 <div className="item-all-cat">
@@ -115,7 +131,7 @@ export default function Home() {
 
 
 
-        </>
+        </div>
 
     )
 }

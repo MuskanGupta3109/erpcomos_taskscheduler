@@ -14,22 +14,13 @@ export default function Header({ usertype }) {
             var id = null
             localStorage.setItem('testKey', usertype);
             localStorage.setItem('userid', id);
-
-
-
-
             window.location.href = ("/")
-
-
-
-
 
         }
         catch (err) {
 
             console.log("err", err)
         }
-
 
     }
 
@@ -73,35 +64,23 @@ export default function Header({ usertype }) {
                                                     <i className="fa fa-google-plus" />
                                                 </a>
                                             </li>
-                                        </ul>
-                                    </div>
-
-                                    <ul className="contact border-start pt-3">
-                                        <li className="">
-                                            <button className="btn btn-danger" onClick={handleSubmit}>
-                                                <span className="text-info">
-                                                    <i className="fa fa-power-off me-1" />
-                                                </span>
-                                            </button>
-                                        </li>
-
-
-
-                                    </ul>
-                                    {/* <div className="clearfix">
-                                        <ul className="contact border-start pt-3">
-                                            <li className="d-lg-none">
-                                                <a href="##" className="callnumber">
-                                                    <span>
-                                                        <i className="fa fa-phone me-1" />: +425 345 8765
+                                            {/* <ul className="contact border-start pt-3"> */}
+                                            <li className="">
+                                                <button className="btn btn-danger" onClick={handleSubmit}>
+                                                    <span className="text-info">
+                                                        <i className="fa fa-power-off me-1" />
                                                     </span>
-                                                </a>
+                                                </button>
                                             </li>
 
 
 
+                                            {/* </ul> */}
                                         </ul>
-                                    </div> */}
+                                    </div>
+
+
+
                                 </div>
                             </div>
 
@@ -233,10 +212,6 @@ export default function Header({ usertype }) {
                 </div>
                 {/*/Horizontal-main*/}
             </div>
-
-
-
-
 
         </>
 

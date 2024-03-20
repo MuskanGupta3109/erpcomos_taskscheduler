@@ -6,35 +6,59 @@ import axios from "axios";
 
 export default function Home() {
     const [data, setData] = useState(undefined);
-    const [user_type, setUserType] = useState('');
+    const [user_type, setusertype] = useState('');
+    const [userId, setuserID] = useState('');
+    const [page, setpage] = useState(1)
+    const [size, setSize] = useState('')
+    const [startindex, setStartIndex] = useState(0)
+    const [limit, setLimit] = useState(15)
+    const [prev, setPrev] = useState('')
+    const [next, setNext] = useState('')
+    const apiurl = process.env.apiurl
 
-    const testValue = localStorage.getItem('testKey');
-    var id = localStorage.getItem('userid');
 
-    console.log('Test value from localStorage:', testValue, id);
-    if (testValue == "null") {
-        window.location.href = './'; // Redirect to the root URL if testValue is null
-        return; // Exit useEffect to prevent further execution
-    }
-    if (testValue == "Transfer") {
-        window.location.href = '../finishedproductjob'; // Redirect to the root URL if testValue is null
-        return; // Exit useEffect to prevent further execution
-    }
+    var testValue = "";
+    var id = ""
+
+    useEffect(() => {
+        // Check if localStorage is available (client-side)
+
+        testValue = localStorage.getItem('testKey');
+        setusertype(testValue);
+        id = localStorage.getItem('userid');
+        setuserID(id);
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        setPrev(prevButton)
+        setNext(nextButton)
+        // setIsLoggedin(testValue);
+        if (testValue == "null") {
+            return window.location.href = '/'; // Redirect to the root URL
+        }
+
+
+    }, []);
 
 
     useEffect(() => {
         // Set user_type with the value from localStorage when component mounts
-        setUserType(testValue);
+        // setUserType(testValue);
 
 
 
         async function fetchData() {
             try {
-                const res = await axios.get(`http://localhost:3000/admin/userdashboard/${id}/${testValue}`, { cache: 'no-store' });
+                console.log("console", userId, user_type)
+                const res = await axios.get(`${apiurl}/admin/userdashboard/${id}/${testValue}`, { cache: 'no-store' });
                 console.log(res)
                 const jsonData = await res.data
                 setData(jsonData.data);
-                console.log("jsonData", jsonData)
+                // console.log("jsonData", jsonData)
+                setSize(parseInt((jsonData.data.length) / 15) + 1)
+                // if (size <= 1) {
+                //     nextButton.disabled = true;
+                // }
+                // prevButton.disabled = true;
             } catch (error) {
                 console.error(error);
                 // Handle error, for example set state indicating error occurred
@@ -44,22 +68,91 @@ export default function Home() {
         fetchData();
     }, [testValue, id]);
 
+    const fetchData1 = async (position) => {
+        console.log(position)
+        if (position == 'next') {
+
+            const pagevalue = page;
+            if ((page + 1) >= size) {
+
+                nextButton.disabled = true;
+            }
+            setpage(page + 1)
+
+
+            if (((page + 1) <= 1)) {
+
+
+                prevButton.disabled = true;
+            }
+            else {
+                prevButton.disabled = false;
+            }
+            setpage(page + 1)
+
+
+            const Index = pagevalue * 15;
+            setStartIndex(Index)
+            const Limit = limit + 15
+            setLimit(Limit)
+
+        }
+
+    }
+    const fetchData2 = async (position) => {
+        console.log("position", position)
+        if (position == 'prev') {
+            nextButton.disabled = false;
+            const pagevalue = page;
+            if ((page - 1) <= 1) {
+                prevButton.disabled = true;
+                // alert("data is completely fetched")
+
+
+            }
+            setpage(page - 1)
+            console.log("page", page)
+
+            const Index = (page - 2) * 15;
+            setStartIndex(Index)
+
+            const Limit = limit - 15
+            setLimit(Limit)
+            console.log("index", Index, Limit)
+
+        }
+
+    }
+
     if (data === undefined) {
         return <div>Loading...</div>
     }
+    // if (size <= 1) {
+    //     nextButton.disabled = true;
+    // }
+    // else {
+    //     console.log("jsonData1", data)
+    // }
 
-    console.log("jsonData1", data)
+
 
     return (
-        <>
-            <Header usertype={testValue} />
+        <div>
+            <Header usertype={user_type} />
             <div className="card mb-0">
                 <div className="card-header">
                     <h3 className="card-title">Jobs List</h3>
+                    <input
+                        type="text"
+                        id="myInput"
+                        // onchange="myFunction()"
+                        onChange={(e) => myFunction()}
+                        placeholder="Search for product names.."
+                    />
                 </div>
                 <div className="card-body">
                     <div className="table-responsive border-top">
-                        <table className="table table-bordered table-hover text-nowrap">
+                        <table className="table table-bordered table-hover text-nowrap" id="datatable-buttons">
                             <thead>
                                 <tr>
                                     <th>Job ID</th>
@@ -94,37 +187,36 @@ export default function Home() {
                             </tbody>
                         </table>
                     </div>
-                    <ul className="pagination">
-                        <li className="page-item page-prev disabled">
-                            <a className="page-link" href="##" tabIndex={-1}>
-                                Prev
-                            </a>
-                        </li>
-                        <li className="page-item active">
-                            <a className="page-link" href="##">
-                                1
-                            </a>
-                        </li>
-                        <li className="page-item">
-                            <a className="page-link" href="##">
-                                2
-                            </a>
-                        </li>
-                        <li className="page-item">
-                            <a className="page-link" href="##">
-                                3
-                            </a>
-                        </li>
-                        <li className="page-item page-next">
-                            <a className="page-link" href="##">
-                                Next
-                            </a>
-                        </li>
-                    </ul>
+                    <>
+                        <button
+                            onClick={(e) => fetchData2('prev')}
+                            className="btn btn-info btn-sm"
+                            id="prevButton"
+
+
+                        >
+                            Previous
+                        </button>
+                        <span>
+                            Page: <span id="currentPage">{page}</span>
+                        </span>
+                        <span>
+                            / <span id="totalpage">{size}</span>
+                        </span>
+                        <button
+                            id="nextButton"
+                            className="btn btn-info btn-sm"
+                            onClick={(e) => fetchData1('next')}
+
+                        >
+                            Next
+                        </button>
+                    </>
+
                 </div>
             </div>
 
-        </>
+        </div>
 
     )
 }
